@@ -1,0 +1,45 @@
+<h1 style="color: #5e9ca0;">Computer Vision</h1>
+<h2 style="color: #2e6c80;">How To Use:</h2>
+<p>Step 1: Select the colour of your object being printed. There are two ways to do this, <br />
+use the colour picker or upload an image of the filament, <br />
+preferably on the roll close up for the most accurate selection. <br />
+</p>
+<form action="." method="POST">
+  Select the colour of filament:
+  <input type="color" name="colour" value="#ff0000">
+  <input type="submit">
+</form>
+<p>For this Computer Vision Plugin, take a font view image (automatic image aquasition still in development) of your object and upload it on the left.</p>
+<p>Click the <span style="background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Upload</span> button to upload an image/ screenshot of you selected object.</p>
+<p>Image Preview</p>
+<img src="https://www.cc.gatech.edu/~hays/compvision/comp_vision_teaser_by_kirkh.jpg" alt="Vision" width="600" height="" align="middle">
+
+
+<p>&nbsp;</p>
+<h2 style="color: #2e6c80;">Matching Check</h2>
+<p><strong>&nbsp;</strong></p>
+<p><strong>&nbsp;</strong></p>
+<div class="w3-light-grey">
+  <div id="myBar" class="w3-container w3-green w3-center" style="width:20%">20%</div>
+</div>
+<br>
+<button class="w3-button w3-green" onclick="move()">Click Me</button>
+<a href="/my-link/">Click me</a>
+</div>
+
+<script>
+function move() {
+  var elem = document.getElementById("myBar");
+  var width = 20;
+  var id = setInterval(frame, 10);
+  function frame() {
+    if (width >= 20) {
+      clearInterval(id);
+    } else {
+      width++;
+      elem.style.width = width + '%';
+      elem.innerHTML = width * 1  + '%';
+    }
+  }
+}
+</script>
