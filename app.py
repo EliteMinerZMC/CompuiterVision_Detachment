@@ -1,3 +1,4 @@
+from builtins import len
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -5,6 +6,8 @@ import colorsys
 import cv2
 import threading
 import imutils
+from collections import deque
+import numpy as np
 
 #flask init
 from flask import Flask
@@ -20,6 +23,10 @@ colour_lower= None
 colour_upper= None
 thread1 = threading.Thread()
 capture_bool = True
+pts = deque(maxlen=args["buffer"])
+counter = 0
+(dX, dY) = (0, 0)
+direction = ""
 
 
 
@@ -83,6 +90,18 @@ def video_capture():
             contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
                                     cv2.CHAIN_APPROX_SIMPLE)[-2]
             obj_center = None
+
+            if len(contours) > 0:
+                obj_contour = max(contours, key=cv2.contourArea)
+                ((x,y), radius) = cv2.minAreaRect(obj_contour)
+                M = cv2.moments(obj_contour)
+                center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                #where stuff happens - possibly change it to edge detection to draw a bound box
+                cv2.rectangle(frame,int(x), int(y),(0, 255, 255),2)
+                #cv2.circle(frame, (int(x), int(y)), int(radius),
+                #           (0, 255, 255), 2)
+                cv2.circle(frame, center, 5, (0, 0, 255),-1)
+                pts.appendleft(center)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',threaded=True)
