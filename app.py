@@ -4,15 +4,37 @@ from flask import request
 import colorsys
 import cv2
 import threading
+import imutils
+
+#flask init
+from flask import Flask
+from flask_navigation import Navigation
 
 app = Flask(__name__)
+nav = Navigation(app)
 
-object_colour = ""
+
+#global variables
+object_colour = None
+colour_lower= None
+colour_upper= None
 thread1 = threading.Thread()
 capture_bool = True
+
+
+
+nav.Bar('top', [
+    nav.Item('Home', 'index'),
+    nav.Item('Extras', 'extra'),
+])
+
 @app.route('/')
 def index():
-    return render_template('home.jinja2', name="meow")
+    return render_template('home.jinja2')
+
+@app.route('/extra')
+def extra():
+    return render_template('hello.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def parse_request():
@@ -40,14 +62,27 @@ def video_capture():
             pass
         else:
             (grabbed, frame) = camera.read()
+            #resize the frame, reduce load on pi, lo
+            #lower resolution image/ frame with mean less computation.
+            frame = imutils.resize(frame, width=600)
 
+            #convert frame to hsv
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('hello.html', name=name)
+            #create a mask from the users inputted colour
+            #this helps detect the object to be tracked
+            #with more time edge detection could be used
+            #however this is a trade off due to time constraints
+            mask =cv2.inRange(hsv,colour_lower,colour_upper)
 
+            #the mask did not origionally get everything
+            #use erode to get rid of these artifacts
+            mask =	mask = cv2.erode(mask, None, iterations=2)
 
+            #utilising the mask find out where the object is
+            contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
+                                    cv2.CHAIN_APPROX_SIMPLE)[-2]
+            obj_center = None
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',threaded=True)

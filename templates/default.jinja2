@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+<div class="container">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+        <title>Index Stuff</title>
+        <h1> Computer Vision <h1/>
+        <ul>
+            {% for item in nav.top %}
+            <li class="{{ 'active' if item.is_active else '' }}">
+            <a href="{{ item.url }}">{{ item.label }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <div id="content">{% block content %}MeowMeowMeow{% endblock %}</div>
+            <div id="footer">
+                {% block footer %}
+                {% endblock %}
+            </div>
+</div>
+</body>
+</html>

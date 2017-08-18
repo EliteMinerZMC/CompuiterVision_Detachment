@@ -1,4 +1,10 @@
-<h1 style="color: #5e9ca0;">Computer Vision</h1>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+</head>
+
+<div class="content">
+{% extends "default.jinja2" %}
+{% block content %}
 <h2 style="color: #2e6c80;">How To Use:</h2>
 <p>Step 1: Select the colour of your object being printed. There are two ways to do this, <br />
 use the colour picker or upload an image of the filament, <br />
@@ -48,3 +54,6 @@ function move() {
   }
 }
 </script>
+{% endblock %}
+</div>
+
