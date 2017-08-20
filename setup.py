@@ -11,6 +11,6 @@ setup(
     description='',
 
     install_requires=['flask',
-                      'opencv-python',
-                      'imutils']
+                      'imutils',
+                      'numpy']
 )

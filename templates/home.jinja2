@@ -18,8 +18,7 @@ preferably on the roll close up for the most accurate selection. <br />
 <p>For this Computer Vision Plugin, take a font view image (automatic image aquasition still in development) of your object and upload it on the left.</p>
 <p>Click the <span style="background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Upload</span> button to upload an image/ screenshot of you selected object.</p>
 <p>Image Preview</p>
-<img src="https://www.cc.gatech.edu/~hays/compvision/comp_vision_teaser_by_kirkh.jpg" alt="Vision" width="600" height="" align="middle">
-
+<img src="{{ url_for('video_feed') }}">
 <br />
 <form action="/run" method="post">
     <button name="submit" type="submit">Start</button>
