@@ -1,0 +1,13 @@
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+</head>
+<div class="content">
+{% extends "default.jinja2" %}
+{% block content %}
+ <form action = "fileupload" method = "POST"
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
+
+{% endblock %}

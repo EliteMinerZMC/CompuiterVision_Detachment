@@ -17,8 +17,10 @@ preferably on the roll close up for the most accurate selection. <br />
 </form>
 <p>For this Computer Vision Plugin, take a font view image (automatic image aquasition still in development) of your object and upload it on the left.</p>
 <p>Click the <span style="background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Upload</span> button to upload an image/ screenshot of you selected object.</p>
+</div>
 <p>Image Preview</p>
 <img src="{{ url_for('video_feed') }}">
+<div class="content">
 <br />
 <form action="/run" method="post">
     <button name="submit" type="submit">Start</button>
