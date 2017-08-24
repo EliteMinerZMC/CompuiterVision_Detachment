@@ -23,7 +23,7 @@ class VideoCamera(object):
         # from a webcam, comment the line below out and use a video file
         # instead.
         self.video = cv2.VideoCapture(0)
-        self.video = cv2.VideoCapture('media/test2.mp4')
+        self.video = cv2.VideoCapture('media/test4.mp4')
 
         # If you decide to use video.mp4, you must have this file in the folder
         # as the main.py.
@@ -54,8 +54,8 @@ class VideoCamera(object):
             mask = cv2.inRange(hsv, mask_colour_lower, mask_colour_upper)
             mask = cv2.erode(mask, None, iterations=2)
             mask = cv2.dilate(mask, None, iterations=2)
-
             # the mask did not origionally get everything
+
 
             # use erode to get rid of these artifacts
             mask = mask = cv2.erode(mask, None, iterations=2)  # utilising the mask find out where the object is
@@ -104,22 +104,25 @@ class VideoCamera(object):
                             dirX = "Movement>5" if np.sign(directionX) == 1 else "Movement>5"
 
                         if np.abs(directionX) > 10:
-                            dirX = "Movement>10"
+                            dirX = "Movement>10"+str(directionX)
 
                         if np.abs(directionX) > 15:
-                            dirX = "Movement>15"
+                            dirX = "Movement>15"+str(directionX)
 
                         if np.abs(directionX) > 20:
-                            dirX = "Movement>20"
+                            dirX = "Movement>20"+str(directionX)
 
                         if np.abs(directionX) > 30:
-                            dirX = "Movement>30"
+                            dirX = "Movement>30  "+str(directionX)+":======OBJECT DETECTED WARNING"
+
 
                         if np.abs(directionX) > 50:
-                            dirX = "Movement>50"
+                            dirX = "Movement>50"+str(directionX)
 
                         if np.abs(directionX) > 70:
-                            dirX = "Movement>70"
+                            dirX = "Movement>70"+str(directionX)
+                        if np.abs(directionX) >100:
+                            dirX = "Abnormal Movment - Possible MisDetection"
 
                         else:
                             direction = dirX if dirX != "" else dirY
