@@ -5,10 +5,11 @@ import cv2
 import imutils
 import numpy as np
 
-(dX, dY) = (0, 0)
+(directionX, directionY) = (0, 0)
 global counter
 counter = 0
 global points
+direction = ""
 ap = argparse.ArgumentParser()
 ap.add_argument("-b", "--buffer", type=int, default=32,
                 help="max buffer size")
@@ -34,6 +35,8 @@ class VideoCamera(object):
     def get_frame(self, mask_colour_lower, mask_colour_upper):
         success, frame = self.video.read()
         origional_image = frame
+        direction = ""
+        dirX = "No Movment"
         if success == True:
             # camera = cv2.VideoCapture('test.mp4')
             # resize the frame, reduce load on pi, lo
@@ -51,8 +54,6 @@ class VideoCamera(object):
             mask = cv2.inRange(hsv, mask_colour_lower, mask_colour_upper)
             mask = cv2.erode(mask, None, iterations=2)
             mask = cv2.dilate(mask, None, iterations=2)
-            cv2.imshow("mask", mask)
-            cv2.waitKey()
 
             # the mask did not origionally get everything
 
@@ -80,6 +81,7 @@ class VideoCamera(object):
                 plots = np.arange(1, len(points))
                 global counter
                 counter += 1
+                #for each plot check for None, then check for
                 for i in plots:
                     if points[i - 1] == None or points[i] == None:
                         # continue skipps following and moves to next iteration of loop
@@ -95,17 +97,37 @@ class VideoCamera(object):
                         (dirX, dirY) = ("", "")
 
                         # ensure there is significant movement in the
-                        # x-direction
-                        if np.abs(dX) > 20:
-                            dirX = "Left" if np.sign(dX) == 1 else "Right"
+                        # x-direction movment
+                        print (directionX)
+                        if np.abs(directionX) > 5:
+                            value = np.abs(directionX)
+                            dirX = "Movement>5" if np.sign(directionX) == 1 else "Movement>5"
 
-                        # handle when both directions are non-empty
-                        #if dirX != "" and dirY != "":
-                        #    direction = "{}-{}".format(dirY, dirX)
+                        if np.abs(directionX) > 10:
+                            dirX = "Movement>10"
 
-                        # otherwise, only one direction is non-empty
+                        if np.abs(directionX) > 15:
+                            dirX = "Movement>15"
+
+                        if np.abs(directionX) > 20:
+                            dirX = "Movement>20"
+
+                        if np.abs(directionX) > 30:
+                            dirX = "Movement>30"
+
+                        if np.abs(directionX) > 50:
+                            dirX = "Movement>50"
+
+                        if np.abs(directionX) > 70:
+                            dirX = "Movement>70"
+
                         else:
                             direction = dirX if dirX != "" else dirY
+
+                        thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
+                        cv2.line(frame, points[i - 1], points[i], (0, 0, 255), thickness)
                 # show the frame to our screen and increment the frame counter
+                cv2.putText(frame, dirX, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.65, (0, 0, 255), 3)
                 ret, jpeg = cv2.imencode('.jpg', frame)
                 return jpeg.tobytes()
